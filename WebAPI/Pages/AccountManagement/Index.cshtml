@@ -1,0 +1,253 @@
+﻿@page
+@model WebAPI.Pages.AccountManagement.IndexModel
+
+
+@{
+    ViewData["Title"] = "Account Management";
+
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h1 class="text-center text-primary mb-4">Account Management</h1>
+
+        <!-- Create New Account Button -->
+        <div class="d-flex justify-content-between mb-3">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
+                <i class="bi bi-person-plus"></i> Create New Account
+            </button>
+
+        </div>
+
+        <div class="d-flex justify-content-between mb-3">
+            <form class="d-flex w-100" method="get">
+                <input type="text" name="searchString" value="@Model.SearchString"
+                       class="form-control flex-grow-1 me-2"
+                       placeholder="Search student name" />
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+
+
+        <!-- Account Table -->
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.SystemAccount.FirstOrDefault().AccountName)</th>
+                        <th>@Html.DisplayNameFor(model => model.SystemAccount.FirstOrDefault().AccountEmail)</th>
+                        <th>@Html.DisplayNameFor(model => model.SystemAccount.FirstOrDefault().AccountRole)</th>
+                        <th width="120px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SystemAccount)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.AccountName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountEmail)</td>
+                            <td>
+                                @if (item.AccountRole == 1)
+                                {
+                                    <span class="badge bg-primary">Staff</span>
+                                }
+                                else if (item.AccountRole == 2)
+                                {
+                                    <span class="badge bg-success">Lecturer</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Unknown</span>
+                                }
+                            </td>
+                            <td>
+                                <button onclick="updateButton(@item.AccountId)" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                    <i class="bi bi-pencil-square"></i> Update
+                                </button>
+                                <a class="btn btn-info btn-sm text-white" asp-page="./Details" asp-route-id="@item.AccountId">
+                                    <i class="bi bi-eye"></i> Details
+                                </a>
+                                <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.AccountId">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Register Account Modal -->
+<div class="modal fade" id="registerModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Create New Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="registerEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerName" class="form-label">Account Name</label>
+                        <input type="text" class="form-control" id="registerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerRole" class="form-label">Role</label>
+                        <select class="form-control" id="registerRole">
+                            <option value="2">Lecturer</option>
+                            <option value="1">Staff</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Account Modal -->
+<div class="modal fade" id="updateModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Update Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" id="updateId">
+                    <div class="mb-3">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateName" class="form-label">Account Name</label>
+                        <input type="text" class="form-control" id="updateName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateRole" class="form-label">Role</label>
+                        <select class="form-control" id="updateRole">
+                            <option value="2">Lecturer</option>
+                            <option value="1">Staff</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var email = document.getElementById("registerEmail").value.trim();
+        var password = document.getElementById("registerPassword").value.trim();
+        var role = document.getElementById("registerRole").value.trim();
+        var name = document.getElementById("registerName").value.trim();
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!email || !password || !role) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/AccountManagement/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Email: email,
+                Password: password,
+                Role: role,
+                Name: name
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Tạo tài khoản thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+
+    document.getElementById("updateForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var email = document.getElementById("updateEmail").value.trim();
+        var role = document.getElementById("updateRole").value.trim();
+        var name = document.getElementById("updateName").value.trim();
+        var Id = document.getElementById("updateId").value.trim();
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!email || !role) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/AccountManagement/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Id: Id,
+                Email: email,
+                Role: role,
+                Name: name,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật tài khoản thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+    function updateButton(id) {
+        fetch(`/AccountManagement/Edit?id=${id}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#updateEmail").val(data.data.accountEmail);
+                    $("#updateName").val(data.data.accountName);
+                    $("#updateRole").val(data.data.accountRole);
+                    $("#updateId").val(data.data.accountId);
+
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    }
+    
+
+
+
+</script>
+

@@ -1,0 +1,1307 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.form-container {
+    width: 350px;
+    min-height: 300px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 30px;
+}
+
+.title {
+    text-align: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    margin: 10px 0 30px 0;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 15px;
+}
+
+.input {
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    outline: 0 !important;
+    box-sizing: border-box;
+    padding: 12px 15px;
+}
+
+.page-link {
+    text-decoration: underline;
+    margin: 0;
+    text-align: end;
+    color: #747474;
+    text-decoration-color: #747474;
+}
+
+.page-link-label {
+    cursor: pointer;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+    .page-link-label:hover {
+        color: #000;
+    }
+
+.form-btn {
+    padding: 10px 15px;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    border-radius: 20px;
+    border: 0 !important;
+    outline: 0 !important;
+    background: teal;
+    color: white;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+    .form-btn:active {
+        box-shadow: none;
+    }
+
+.sign-up-label {
+    margin: 0;
+    font-size: 10px;
+    color: #747474;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.sign-up-link {
+    margin-left: 1px;
+    font-size: 11px;
+    text-decoration: underline;
+    text-decoration-color: teal;
+    color: teal;
+    cursor: pointer;
+    font-weight: 800;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.buttons-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+.apple-login-button,
+.google-login-button {
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 11px;
+    gap: 5px;
+}
+
+.apple-login-button {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+}
+
+.google-login-button {
+    border: 2px solid #747474;
+}
+
+.apple-icon,
+.google-icon {
+    font-size: 18px;
+    margin-bottom: 1px;
+}
+@import "compass/css3";
+
+/* Google Fonts @import */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,800italic,400,800);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic);
+
+/*Body Background*/
+$body-bg: transparent;
+$body-bg-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64694/pattern8.png");
+$body-bg-repeat:repeat; /*change to repeat for repeating background, no-repeat for full screen image*/
+$body-bg-cover:auto; /*change to cover for full screen image, auto for repeating image*/
+/* Base styles */
+$text-color: #33231E;
+$hat-bg: #fff;
+$header-bg: #000;
+$page-bg: #fff;
+$highlight-bg: #cdcdcd;
+$footer-bg: #000;
+/* Font styles */
+$body-font-family: 'Droid Serif', Georgia, Verdana, serif;
+$body-font-size: 16px;
+$heading-font-family: 'Open Sans', Georgia, Verdana, serif;
+$heading-color: #33231E;
+/* Link styles */
+$link-color: #bbb;
+$hover-color : tomato;
+$secondary-link-color: #BF5914;
+$secondary-hover-color: #859AC0;
+/* Primary button styles */
+$button-bg: #000;
+$button-link: $link-color;
+$button-bg-hover:#CCC;
+$button-link-hover: $hover-color;
+/* Secondary button styles */
+$secondary-button-bg: #BF5914;
+$secondary-button-link: #fff;
+$secondary-button-bg-hover: #BF5914;
+$secondary-button-link-hover: #33231E;
+
+
+* {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {
+    font-family: $body-font-family;
+    font-size: $body-font-size;
+    color: $text-color;
+    background-image: $body-bg-image;
+    background-color: $body-bg;
+    background-repeat: $body-bg-repeat;
+    background-size: $body-bg-cover;
+    font-weight: 300;
+    line-height: 1.5;
+    a
+
+{
+    color: $link-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    &:hover
+
+{
+    color: $hover-color;
+}
+
+}
+
+p {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin-top: .5em;
+}
+
+h1 {
+    font-family: $heading-font-family;
+    color: $heading-color;
+    font-size: 2em;
+    line-height: normal;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: normal;
+    margin-bottom: .25em;
+    &:hover
+
+{
+    color: $hover-color;
+    cursor: pointer;
+}
+
+}
+
+h2 {
+    line-height: normal;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+i {
+    font-style: italic;
+    font-size: .8em;
+}
+
+}
+
+#page {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.content {
+    max-width: 1330px;
+    margin: 1em auto 0;
+    padding: 0em 1em;
+}
+
+#header {
+    background: $header-bg;
+    margin: 0 auto;
+    font-family: $heading-font-family;
+    padding: 1.5em 1em 1em;
+    .header-inner
+
+{
+    max-width: 1329px;
+    margin: 0 auto;
+    height: 2.75em;
+}
+
+.navbar {
+    .logo
+
+{
+    float: left;
+}
+
+.menu {
+    float: right;
+    margin-top: 0.25em;
+    ul
+
+{
+    list-style-type: none;
+}
+
+li {
+    display: inline;
+    padding: 0 .5em;
+}
+
+}
+}
+}
+
+#mobile-menu {
+    background: url('https://startersitev2.wmg-gardens.com/sites/startersitev2.wmg-gardens.com/files/201306/home-onepage-mobile_menu.png') no-repeat scroll right 0 transparent;
+    cursor: pointer;
+    height: 1.25em;
+    margin-top: 0.05em;
+    float: right;
+    width: 1.5625em;
+    ul .mobile-menu
+
+{
+    margin-top: .75em;
+    position: absolute;
+    left: 0;
+    top: 72px;
+    width: 100%;
+    z-index: 100000;
+    display: none;
+    li
+
+{
+    background: $page-bg;
+    border-top: 1px solid $highlight-bg;
+    text-align: center;
+    width: 100%;
+    padding: 15px 0;
+    margin: 0;
+    a
+
+{
+    display: block;
+}
+
+}
+}
+}
+
+/* main content area =======================*/
+#hero {
+    margin: 0 auto;
+    text-align: center;
+}
+
+/*Caption*/
+
+.caption-wrapper {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+}
+
+.caption {
+    margin: 0 auto;
+    line-height: normal;
+    font-weight: bold;
+    padding-top: 10%;
+}
+
+/* Hero Container ======================= */
+
+
+
+.wide-container {
+    height: 600px;
+    margin: 0 auto;
+}
+
+
+
+.main {
+    float: left;
+    width: 60%;
+    margin-right: 1em;
+    img
+
+{
+    max-width: 100%;
+}
+
+}
+
+/* sidebar =======================*/
+
+.sidebar-right {
+    float: right;
+    width: 30%;
+    img
+
+{
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 1.25em;
+}
+
+.block {
+    margin-bottom: 1.5em;
+}
+
+}
+
+#footer {
+    background: $footer-bg;
+    width: 100%;
+    display: block;
+    font-size: .85em;
+    padding: 2em;
+    li
+
+{
+    display: inline-block;
+}
+
+}
+/* BIT styles =======================*/
+
+.bit-track-artist-header {
+    display: none !important;
+}
+
+#bit-events td.bit-description-links, #bit-events th.bit-description-links, #bit-events th.bit-date, #bit-events th.bit-venue, #bit-events th.bit-location, #bit-events th.bit-tickets {
+    display: none;
+}
+
+.bit-events th, .bit-events td {
+    padding: 0 !important;
+}
+
+.bit-constrictor {
+    margin: 0 auto;
+    a
+
+{
+    color: #000;
+}
+
+}
+
+.bit-constrictor480 {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.bit-constrictor-half {
+    width: 50%;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width : 768px) {
+
+    .bit-wrapper {
+        background-image: none;
+    }
+
+    .bit-constrictor {
+        max-width: 450px;
+    }
+
+        .bit-constrictor .narrow {
+            display: block;
+        }
+
+        .bit-constrictor .wide {
+            display: none;
+        }
+
+    .float-left {
+        float: none;
+    }
+
+    .bit-constrictor-half {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width : 768px) {
+    .bit-constrictor .narrow {
+        display: none;
+    }
+
+    .bit-constrictor .wide {
+        display: block;
+    }
+}
+
+
+.photo {
+    margin-top: 1em;
+}
+
+.pagination {
+    width: 100%;
+    display: block;
+    padding: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 3px 9px;
+    margin-right: 4px;
+    background: $button-bg;
+    color: $button-link;
+    width: 100%;
+    &:hover
+
+{
+    background: $button-bg-hover;
+    color: $button-link-hover
+}
+
+}
+
+.readmore {
+    width: 100%;
+    height: 2em;
+    border-bottom: 1px #ccc solid;
+    margin-bottom: 1.5em;
+    a
+
+{
+    float: right;
+    text-transform: capitalize;
+    font-size: .85em;
+}
+
+}
+
+
+
+
+/* SUPERSLIDES =======================*/
+
+#slides {
+    text-align: center;
+    height: 500px;
+}
+
+    #slides .slides-container {
+        display: none;
+        height: 500px;
+        width: 100%;
+    }
+
+    #slides .scrollable {
+        *zoom: 1;
+        position: relative;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+    }
+
+        #slides .scrollable:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+.slides-navigation {
+    margin: 0 auto;
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    width: 100%;
+    margin-top: -25px;
+}
+
+    .slides-navigation a {
+        position: absolute;
+        display: block;
+        text-indent: -9999px;
+        white-space: nowrap;
+    }
+
+        .slides-navigation a:hover {
+            opacity: 0.7;
+        }
+
+        .slides-navigation a.prev {
+            left: 2%;
+            background: url(https://s.cdpn.io/17920/button-previous.png) top left no-repeat;
+            height: 51px;
+            width: 31px;
+        }
+
+        .slides-navigation a.next {
+            right: 2%;
+            background: url(https://s.cdpn.io/17920/button-next.png) top left no-repeat;
+            height: 51px;
+            width: 31px;
+        }
+
+.slides-pagination {
+    position: absolute;
+    z-index: 3;
+    bottom: 3%;
+    text-align: center;
+    width: 100%;
+    display: none;
+}
+
+    .slides-pagination a {
+        border: 2px solid #fff;
+        border-radius: 15px;
+        width: 10px;
+        height: 10px;
+        display: -moz-inline-stack;
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        zoom: 1;
+        *display: inline;
+        margin: 2px;
+        overflow: hidden;
+        text-indent: -100%;
+    }
+
+        .slides-pagination a.current {
+            background: #fff;
+        }
+
+
+
+/* #Base 1360 Grid
+================================================== */
+
+.container {
+    position: relative;
+    width: 1360px;
+    margin: 0 auto;
+    padding: 0; /*background: url(https://s.cdpn.io/17920/bg1360.jpg) left top repeat-y;*/
+}
+
+    .container .column,
+    .container .columns {
+        float: left;
+        display: inline;
+        margin-left: 16px;
+        margin-right: 0px;
+        background-color: #fff;
+        opacity: .85;
+    }
+
+.row {
+    margin-bottom: 20px;
+}
+
+.inner {
+    padding: 15px;
+}
+
+.wide {
+    display: block;
+}
+
+.desktop {
+    display: block;
+}
+
+.mobile {
+    display: none;
+}
+
+.laptop {
+    display: none;
+}
+
+.portrait {
+    display: none;
+}
+
+.mobilel {
+    display: none;
+}
+
+.mobilep {
+    display: none;
+}
+
+.description {
+    width: 200px;
+    position: absolute;
+    z-index: 2000;
+    top: 0;
+    right: 0;
+    border: solid 1px #ccc;
+    padding: 5px 10px;
+}
+
+/* Nested Column Classes */
+.column.alpha, .columns.alpha {
+    margin-left: 0;
+}
+
+.column.omega, .columns.omega {
+    margin-right: 0;
+}
+
+/* Base Grid */
+.container .one.column,
+.container .one.columns {
+    width: 80px;
+}
+
+.container .two.columns {
+    width: 176px;
+}
+
+.container .three.columns {
+    width: 272px;
+}
+
+.container .four.columns {
+    width: 368px;
+}
+
+.container .five.columns {
+    width: 464px;
+    padding: 16px;
+}
+
+.container .six.columns {
+    width: 560px;
+}
+
+.container .seven.columns {
+    width: 656px;
+}
+
+.container .eight.columns {
+    width: 752px;
+}
+
+.container .nine.columns {
+    width: 848px;
+    padding: 16px;
+}
+
+.container .ten.columns {
+    width: 944px;
+}
+
+.container .eleven.columns {
+    width: 1040px;
+}
+
+.container .twelve.columns {
+    width: 1136px;
+}
+
+.container .thirteen.columns {
+    width: 1232px;
+}
+
+.container .fourteen.columns {
+    width: 1328px;
+}
+
+.container .one-third.column {
+    width: 432px;
+}
+
+.container .two-thirds.column {
+    width: 880px;
+}
+
+#mobile-menu {
+    display: none;
+}
+
+/* 1024
+================================================== */
+
+@media only screen and (min-width: 1024px) and (max-width: 1359px) {
+    .container {
+        position: relative;
+        width: 1024px;
+        margin: 0 auto;
+        padding: 0; /*background: url(https://s.cdpn.io/17920/bg1024_1.jpg) left top repeat-y;*/
+    }
+
+        .container .column,
+        .container .columns {
+            float: left;
+            display: inline;
+            margin-left: 15px;
+            margin-right: 0;
+        }
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    .wide {
+        display: none;
+    }
+
+    .desktop {
+        display: block;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    .laptop {
+        display: block;
+    }
+
+    .portrait {
+        display: none;
+    }
+
+    .mobilel {
+        display: none;
+    }
+
+    .mobilep {
+        display: none;
+    }
+
+    .description {
+        width: 250px;
+        z-index: 2000;
+        top: 0;
+        right: 0;
+    }
+
+    /* Nested Column Classes */
+    .column.alpha, .columns.alpha {
+        margin-left: 0;
+    }
+
+    .column.omega, .columns.omega {
+        margin-right: 0;
+    }
+
+    /* Base Grid */
+    .container .one.column,
+    .container .one.columns {
+        width: 57px;
+    }
+
+    .container .two.columns {
+        width: 129px;
+    }
+
+    .container .three.columns {
+        width: 201px;
+    }
+
+    .container .four.columns {
+        width: 273px;
+    }
+
+    .container .five.columns {
+        width: 345px;
+    }
+
+    .container .six.columns {
+        width: 417px;
+    }
+
+    .container .seven.columns {
+        width: 489px;
+    }
+
+    .container .eight.columns {
+        width: 561px;
+    }
+
+    .container .nine.columns {
+        width: 633px;
+    }
+
+    .container .ten.columns {
+        width: 705px;
+    }
+
+    .container .eleven.columns {
+        width: 777px;
+    }
+
+    .container .twelve.columns {
+        width: 849px;
+    }
+
+    .container .thirteen.columns {
+        width: 921px;
+    }
+
+    .container .fourteen.columns {
+        width: 993px;
+    }
+
+    .container .one-third.column {
+        width: 321px;
+    }
+
+    .container .two-thirds.column {
+        width: 657px;
+    }
+
+    .wide-container {
+        height: 500px;
+    }
+}
+
+/* #Tablet (Portrait)
+================================================== */
+
+/* Note: Design for a width of 768px */
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        width: 757px; /*background: url(https://s.cdpn.io/17920/bg768_1.jpg) 1px top repeat-y;*/
+    }
+
+        .container .column,
+        .container .columns {
+            margin-left: 15px;
+            margin-right: 0px;
+        }
+
+    .column.alpha, .columns.alpha {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .column.omega, .columns.omega {
+        margin-right: 0;
+        margin-left: 10px;
+    }
+
+    .alpha.omega {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .wide {
+        display: none;
+    }
+
+    .desktop {
+        display: block;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    .laptop {
+        display: none;
+    }
+
+    .portrait {
+        display: block;
+    }
+
+    .mobilel {
+        display: none;
+    }
+
+    .mobilep {
+        display: none;
+    }
+
+    .description {
+        width: 250px;
+        z-index: 2000;
+        top: 0;
+        right: 0;
+    }
+
+    .container .one.column,
+    .container .one.columns {
+        width: 38px;
+    }
+
+    .container .two.columns {
+        width: 91px;
+    }
+
+    .container .three.columns {
+        width: 144px;
+    }
+
+    .container .four.columns {
+        width: 197px;
+    }
+
+    .container .five.columns {
+        width: 250px;
+    }
+
+    .container .six.columns {
+        width: 303px;
+    }
+
+    .container .seven.columns {
+        width: 356px;
+    }
+
+    .container .eight.columns {
+        width: 409px;
+    }
+
+    .container .nine.columns {
+        width: 462px;
+    }
+
+    .container .ten.columns {
+        width: 515px;
+    }
+
+    .container .eleven.columns {
+        width: 568px;
+    }
+
+    .container .twelve.columns {
+        width: 621px;
+    }
+
+    .container .thirteen.columns {
+        width: 674px;
+    }
+
+    .container .fourteen.columns {
+        width: 727px;
+    }
+
+    .container .one-third.column {
+        width: 232px;
+    }
+
+    .container .two-thirds.column {
+        width: 480px;
+    }
+
+    .wide-container {
+        height: 400px;
+    }
+
+    #mobile-menu {
+        display: block;
+    }
+
+    .menu {
+        display: none;
+    }
+}
+
+
+/*  #Mobile (Portrait)
+================================================== */
+
+/* Note: Design for a width of 320px */
+
+@media only screen and (max-width: 767px) {
+    .container {
+        width: 300px; /*background: none; background-color: #c2ebff;*/
+    }
+
+        .container .columns,
+        .container .column {
+            margin: 0;
+        }
+
+    .wide {
+        display: none;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .laptop {
+        display: none;
+    }
+
+    .portrait {
+        display: none;
+    }
+
+    .mobilel {
+        display: none;
+    }
+
+    .mobilep {
+        display: block;
+    }
+
+    .description {
+        width: auto;
+        z-index: 2000;
+    }
+
+        .description br {
+            display: none;
+        }
+
+    .reveal {
+        padding: 0;
+        margin: 0;
+        background-color: none;
+        border: 0;
+    }
+
+    .container .one.column,
+    .container .one.columns,
+    .container .two.columns,
+    .container .three.columns,
+    .container .four.columns,
+    .container .five.columns,
+    .container .six.columns,
+    .container .seven.columns,
+    .container .eight.columns,
+    .container .nine.columns,
+    .container .ten.columns,
+    .container .eleven.columns,
+    .container .twelve.columns,
+    .container .thirteen.columns,
+    .container .fourteen.columns,
+    .container .one-third.column,
+    .container .two-thirds.column {
+        width: 300px;
+    }
+
+    .wide-container {
+        height: 300px;
+    }
+
+    #mobile-menu {
+        display: block;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .logo {
+        width: 200px;
+    }
+}
+
+
+/* #Mobile (Landscape)
+================================================== */
+
+/* Note: Design for a width of 480px */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .container {
+        width: 420px;
+    }
+
+        .container .columns,
+        .container .column {
+            margin: 0;
+        }
+
+    .desktop {
+        display: none;
+    }
+
+    .wide {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .laptop {
+        display: none;
+    }
+
+    .portrait {
+        display: none;
+    }
+
+    .mobilel {
+        display: block;
+    }
+
+    .mobilep {
+        display: none;
+    }
+
+    .description {
+        width: auto;
+        z-index: 2000;
+    }
+
+        .description br {
+            display: none;
+        }
+
+    .reveal {
+        padding: 0;
+        margin: 0;
+        background-color: none;
+        border: 0;
+    }
+
+    .container .one.column,
+    .container .one.columns,
+    .container .two.columns,
+    .container .three.columns,
+    .container .four.columns,
+    .container .five.columns,
+    .container .six.columns,
+    .container .seven.columns,
+    .container .eight.columns,
+    .container .nine.columns,
+    .container .ten.columns,
+    .container .eleven.columns,
+    .container .twelve.columns,
+    .container .thirteen.columns,
+    .container .fourteen.columns,
+    .container .one-third.column,
+    .container .two-thirds.column {
+        width: 420px;
+    }
+
+    .wide-container {
+        height: 200px;
+    }
+
+    .logo {
+        width: 200px;
+    }
+}
+
+
+/* #Clearing
+================================================== */
+
+/* Self Clearing Goodness */
+.container:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* Use clearfix class on parent to clear nested columns,
+    or wrap each row of columns in a <div class="row"> */
+.clearfix:before,
+.clearfix:after,
+.row:before,
+.row:after {
+    content: '\0020';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.row:after,
+.clearfix:after {
+    clear: both;
+}
+
+.row,
+.clearfix {
+    zoom: 1;
+}
+
+/* You can also use a <br class="clear" /> to clear columns */
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+.carousel img {
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 550px;
+    max-height: 550px;
+    width: auto;
+}
+.news.description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Giới hạn số dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

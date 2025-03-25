@@ -1,0 +1,58 @@
+﻿@page
+@model WebAPI.Pages.News.IndexModel
+@{
+    ViewData["Title"] = "List News";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <section id="news">
+                @foreach (var item in Model.NewsArticle)
+                {
+                    <div class="card mb-4 shadow-sm border-0">
+                        <div class="card-body">
+                            <h2 class="text-primary">@item.NewsTitle</h2>
+                            <p class="text-muted">
+                                <i class="bi bi-calendar"></i> @item.CreatedDate |
+                                <i class="bi bi-person"></i> <strong>@item.CreatedBy.AccountName</strong>
+                            </p>
+                            <p class="text-secondary">
+                                @if (item.NewsContent.Length > 100)
+                                {
+                                    @item.NewsContent.Substring(0, 100) <text>...</text>
+                                }
+                                else
+                                {
+                                    @item.NewsContent
+                                }
+                            </p>
+                            <a href="./News?id=@item.NewsArticleId" class="btn btn-success btn-sm">
+                                Read More →
+                            </a>
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="p-4 border rounded shadow-sm bg-light">
+                <h4 class="mb-3 text-dark">Categories</h4>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.NewCategories)
+                    {
+                        <li class="list-group-item border-0">
+                            <a class="text-decoration-none text-dark fw-bold d-block py-2"
+                               href="./Index?CategoryId=@item.CategoryId">
+                                @item.CategoryName
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

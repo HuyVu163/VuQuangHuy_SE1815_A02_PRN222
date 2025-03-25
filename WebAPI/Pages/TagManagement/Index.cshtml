@@ -1,0 +1,187 @@
+﻿@page
+@model WebAPI.Pages.TagManagement.IndexModel
+
+@{
+    ViewData["Title"] = "Tag Management";
+}
+
+<h1>Tag Management</h1>
+
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#registerModal">
+    Create New Tag
+</button>
+<form class="d-flex align-content-center" method="get">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Enter Tag Name" class="form-control mt-2" />
+    <button type="submit" class="btn btn-primary mt-2 ms-2">Search</button>
+</form>
+<div class="container">
+    <div class="modal fade" id="registerModal" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Tạo Tag</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerTagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="registerTagName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="registerNote" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateModal" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Cập nhật tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm">
+                        <input type="hidden" id="updateId">
+                        <div class="mb-3">
+                            <label for="updateTagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="updateTagName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="updateNote" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tag[0].TagName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tag[0].Note)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Tag) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TagName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                    <button onclick="updateButton(@item.TagId)" value="@item.TagId" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button> 
+                    <a class="btn btn-info mt-3 mb-3" asp-page="./Details" asp-route-id="@item.TagId">Details</a>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.TagId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var tagName = document.getElementById("registerTagName").value.trim();
+        var note = document.getElementById("registerNote").value.trim();
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!tagName || !note ) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/TagManagement/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                TagName: tagName,
+                Note: note
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Tạo tag thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+
+    document.getElementById("updateForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var tagName = document.getElementById("updateTagName").value.trim();
+        var note = document.getElementById("updateNote").value.trim();
+        var id = document.getElementById("updateId").value.trim();
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!tagName || !note) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/TagManagement/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                TagId: id,
+                TagName: tagName,
+                Note: note
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật Tag thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+    function updateButton(id) {
+        fetch(`/TagManagement/Edit?id=${id}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#updateTagName").val(data.data.tagName);
+                    $("#updateNote").val(data.data.note);
+                    $("#updateId").val(data.data.tagId);
+
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    }
+
+
+
+
+</script>

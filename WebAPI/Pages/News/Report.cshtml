@@ -1,0 +1,67 @@
+﻿@page
+@model WebAPI.Pages.News.ReportModel
+@{
+	ViewData["Title"] = "Report";
+}
+<div class="text-center">
+	<h1 class="display-4">Report</h1>
+</div>
+<!-- Form lọc theo ngày -->
+<div class="row justify-content-center mt-4">
+	<div class="col-md-6 col-lg-4">
+		<form method="get" class="p-3 shadow-sm bg-white rounded">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="row g-2">
+				<div class="col-6">
+					<label for="startDate" class="form-label">Date From</label>
+					<input type="date" name="startDate" value="@Model.StartDate" class="form-control" />
+				</div>
+				<div class="col-6">
+					<label for="endDate" class="form-label">Date To</label>
+					<input type="date" name="endDate" value="@Model.EndDate" class="form-control" />
+				</div>
+			</div>
+			<div class="text-end mt-3">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row bg-light gx-3">
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 rounded-4 bg-primary text-white h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="fw-bold">@Model.ReportDTO.totalNews</h5>
+                <p class="mb-0">Total News</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 rounded-4 bg-success text-white h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="fw-bold">@Model.ReportDTO.totalCategory</h5>
+                <p class="mb-0">Total Category</p>
+                <small class="text-white-50">Most Used: <span class="fw-bold">@Model.ReportDTO.mostCategory</span></small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 rounded-4 bg-warning text-white h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="fw-bold">@Model.ReportDTO.totalAuthor</h5>
+                <p class="mb-0">Total Authors</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 rounded-4 bg-danger text-white h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="fw-bold">@Model.ReportDTO.totalTag</h5>
+                <p class="mb-0">Total Tags</p>
+            </div>
+        </div>
+    </div>
+</div>

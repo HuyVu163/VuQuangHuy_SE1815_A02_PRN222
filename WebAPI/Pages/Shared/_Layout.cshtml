@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FUNewsManagement</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebAPI.styles.css" asp-append-version="true" />
+    
+    <title>Login/Register Modal by Creative Tim</title>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">FUNewsManagement</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 d-flex justify-content-between w-100 align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <li class="nav-item">
+                                <a onclick="updateButtonHeader(@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)" data-bs-toggle="modal" data-bs-target="#profileStaff" class="nav-link text-dark" href="javascript:void(0);">Hi, @User.Identity.Name</a> <!-- Hiển thị tên người dùng -->
+                                </li>
+
+                                <li class="nav-item">
+                                    <form method="post" asp-page="/Logout" class="nav-link text-dark" style="border: none; background: none;">
+                                        <button type="submit" class="btn btn-link">Logout</button> <!-- Đăng xuất -->
+                                    </form>
+                                </li>
+                            </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3"> 
+            @if (User.IsInRole("1"))
+            {
+                <div class="modal fade" id="profileStaff" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Cập nhật tài khoản</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateFormStaff">
+                                    <input type="hidden" id="updateId">
+                                    <div class="mb-3">
+                                        <label for="updateEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="updateEmail" disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateName" class="form-label">Account Name</label>
+                                        <input type="text" class="form-control" id="updateName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateRole" class="form-label">Chọn vai trò</label>
+                                        <select class="form-control" id="updateRole" disabled>
+                                            <option value="2">Lecturer</option>
+                                            <option value="1">Staff</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - WebAPI - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function updateButtonHeader(id) {
+            fetch(`/AccountManagement/Edit?id=${id}`, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        $("#updateEmail").val(data.data.accountEmail);
+                        $("#updateName").val(data.data.accountName);
+                        $("#updateRole").val(data.data.accountRole);
+                        $("#updateId").val(data.data.accountId);
+
+                    } else {
+                        alert("Lỗi: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Lỗi khi gửi request:", error));
+        }
+        document.getElementById("updateFormStaff").addEventListener("submit", function (e) {
+            e.preventDefault(); // Ngăn chặn reload trang
+
+            var email = document.getElementById("updateEmail").value.trim();
+            var role = document.getElementById("updateRole").value.trim();
+            var name = document.getElementById("updateName").value.trim();
+            var Id = document.getElementById("updateId").value.trim();
+
+            // Kiểm tra nếu dữ liệu nhập bị trống
+            if (!email || !role) {
+                alert("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            fetch('/AccountManagement/Edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Id: Id,
+                    Email: email,
+                    Role: role,
+                    Name: name,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Cập nhật tài khoản thành công!");
+                        location.reload(); // Reload trang sau khi đăng ký thành công
+                    } else {
+                        alert("Lỗi: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Lỗi khi gửi request:", error));
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

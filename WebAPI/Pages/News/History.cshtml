@@ -1,0 +1,105 @@
+﻿@page
+@model WebAPI.Pages.News.HistoryModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+<h1>News Article Management</h1>
+
+
+<form class="d-flex align-content-center" method="get">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Enter Title News Name" class="form-control mt-2" />
+    <button type="submit" class="btn btn-primary mt-2 ms-2">Search</button>
+</form>
+<div class="container">
+    
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Headline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsSource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].ModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].UpdatedById)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Tags.FirstOrDefault().TagName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.NewsArticle) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Headline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsSource)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy.AccountEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedById)
+            </td>
+            <td>
+                @foreach (var tag in item.Tags)
+                {
+                    <span>@tag.TagName</span>
+                }
+            </td>
+            <td>
+
+                    <a class="btn btn-info" href="../News?id=@item.NewsArticleId" >View</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

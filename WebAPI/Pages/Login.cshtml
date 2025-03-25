@@ -1,0 +1,20 @@
+﻿@page
+@model WebAPI.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login  page";
+
+}
+<!-- From Uiverse.io by akshat-patel28 -->
+<div class="form-container m-auto">
+    <p class="title">Welcome back</p>
+    
+    <form class="form" method="post">
+        <input asp-for="Account.AccountEmail" type="email" class="input" placeholder="Email">
+        <span asp-validation-for="Account.AccountEmail" class="text-danger"></span>
+        <input asp-for="Account.AccountPassword" type="password" class="input" placeholder="Password">
+        <span asp-validation-for="Account.AccountPassword" class="text-danger"></span>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <button class="form-btn">Log in</button>
+    </form>
+
+</div>

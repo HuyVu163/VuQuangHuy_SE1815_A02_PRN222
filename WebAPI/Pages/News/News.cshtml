@@ -1,0 +1,34 @@
+﻿@page
+@model WebAPI.Pages.News.NewsModel
+@{
+    ViewData["Title"] = "News";
+    
+}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12 blog-main">
+            <h3 class="pb-3 mb-4 font-italic border-bottom">
+                News of @Html.DisplayFor(model => model.NewsArticle.NewsSource)
+            </h3>
+
+            <div class="blog-post">
+                <h2 class="blog-post-title">@Html.DisplayFor(model => model.NewsArticle.NewsTitle)</h2>
+                <p class="blog-post-meta">@Html.DisplayFor(model => model.NewsArticle.CreatedDate) by @Html.DisplayFor(model => model.NewsArticle.CreatedBy.AccountName)</p>
+
+                <p>@Html.DisplayFor(model => model.NewsArticle.NewsTitle)</p>
+                <hr>
+                <p>@Html.DisplayFor(model => model.NewsArticle.NewsContent)</p>
+            </div><!-- /.blog-post -->
+
+            
+
+</div><!-- /.blog-main -->
+<script>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                alert("@TempData["ErrorMessage"]");
+                window.location.href = "./Index";
+            </text>
+        }
+</script>

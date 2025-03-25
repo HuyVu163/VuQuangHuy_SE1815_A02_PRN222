@@ -1,0 +1,546 @@
+﻿@page
+@model WebAPI.Pages.News.HomeModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+<h1>News Article Management</h1>
+
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#registerModal">
+    Create News Article
+</button>
+<form class="d-flex align-content-center" method="get">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Enter Title News Name" class="form-control mt-2" />
+    <button type="submit" class="btn btn-primary mt-2 ms-2">Search</button>
+</form>
+<div class="container">
+    <div class="modal fade" id="registerModal" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Tạo News</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerNewsTitle" class="form-label">News Title</label>
+                            <input type="text" class="form-control" id="registerNewsTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerHeadline" class="form-label">Headline</label>
+                            <input type="text" class="form-control" id="registerHeadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerNewsSource" class="form-label">News Source</label>
+                            <input type="text" class="form-control" id="registerNewsSource" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerCategory" class="form-label">Category</label>
+                            <select class="form-control" id="registerCategory">
+                                @foreach (var item in Model.CategoryList)
+                                {
+                                    <option value="@item.CategoryId">@item.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerTags" class="form-label">Tags</label>
+                            <select data-placeholder="Begin typing a name to filter..." id="registerTags" multiple class="chosen-select" name="test">
+                                @foreach (var item in Model.TagList)
+                                {
+                                    <option value="@item.TagId">@item.TagName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerNewsContent" class="form-label">News Content</label>
+                            <textarea type="text" class="form-control" id="registerNewsContent" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateModal" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Cập nhật news</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm">
+                        <input type="hidden" id="updateId">
+                        <div class="mb-3">
+                            <label for="updateNewsTitle" class="form-label">News Title</label>
+                            <input type="text" class="form-control" id="updateNewsTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateHeadline" class="form-label">Headline</label>
+                            <input type="text" class="form-control" id="updateHeadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateNewsContent" class="form-label">News Content</label>
+                            <input type="text" class="form-control" id="updateNewsContent" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateNewsSource" class="form-label">News Source</label>
+                            <input type="text" class="form-control" id="updateNewsSource" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateCategory" class="form-label">Category</label>
+                            <select class="form-control" id="updateCategory">
+                                @foreach (var item in Model.CategoryList)
+                                {
+                                    <option value="@item.CategoryId">@item.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateTags" class="form-label">Tags</label>
+                            <select data-placeholder="Begin typing a name to filter..." id="updateTags" multiple class="chosen-select" name="test">
+                                @foreach (var item in Model.TagList)
+                                {
+                                    <option value="@item.TagId">@item.TagName</option>
+                                }
+                            </select>
+                        </div>
+                        <select hidden data-placeholder="Begin typing a name to filter..." id="updateTagsAAA" multiple class="chosen-select" name="test">
+                            @foreach (var item in Model.TagList)
+                            {
+                                <option value="@item.TagId">@item.TagName</option>
+                            }
+                        </select>
+                        <div class="mb-3">
+                            <label for="updateStatus" class="form-label">Status</label>
+                            <select class="form-control" id="updateStatus">
+                                <option value="1">Active</option>
+                                <option value="0">InActive</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Headline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsSource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].NewsStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].ModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].UpdatedById)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticle[0].Tags.FirstOrDefault().TagName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.NewsArticle) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Headline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsSource)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy.AccountEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedById)
+            </td>
+            <td>
+                @foreach (var tag in item.Tags)
+                {
+                    <span>@tag.TagName</span>
+                }
+            </td>
+            <td>
+                    <button onclick="updateButton('@item.NewsArticleId')" value="@item.NewsArticleId" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                    <a class="btn btn-info mt-3 mb-3" asp-page="./Details" asp-route-id="@item.NewsArticleId">Details</a>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.NewsArticleId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+
+
+
+
+
+    $(document).ready(function () {
+        // Initialize Choices.js for the register form
+        var multipleCancelButton = new Choices('#registerTags', {
+            removeItemButton: true
+        });
+
+        // Handle registration form submission
+        document.getElementById("registerForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent page reload
+
+            var newsTitle = document.getElementById("registerNewsTitle").value.trim();
+            var headline = document.getElementById("registerHeadline").value.trim();
+            var newsContent = document.getElementById("registerNewsContent").value.trim();
+            var newsSource = document.getElementById("registerNewsSource").value.trim();
+            var category = document.getElementById("registerCategory").value.trim();
+            var tags = multipleCancelButton.getValue(true);
+
+            if (tags == null || tags.length === 0) {
+                alert("Vui lòng chọn tag!");
+                return;
+            }
+
+            // Check if any required fields are empty
+            if (!newsTitle || !headline || !newsContent || !newsSource || !category) {
+                alert("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            fetch('/News/Create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    NewsTitle: newsTitle,
+                    Headline: headline,
+                    NewsContent: newsContent,
+                    NewsSource: newsSource,
+                    CategoryId: category,
+                    Tags: tags
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Tạo news thành công!");
+                        // Don't reload the page - SignalR will handle the update
+                        $("#registerModal").modal('hide');
+                        // Clear form fields
+                        document.getElementById("registerForm").reset();
+                    } else {
+                        alert("Lỗi: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Lỗi khi gửi request:", error));
+        });
+    });
+
+    // Initialize Choices.js for the update form
+    var multipleCancelButton = new Choices('#updateTags', {
+        removeItemButton: true,
+        shouldSort: false
+    });
+
+    function updateChoicesTags(tags, existingOptions) {
+        // Check if Choices.js has been initialized
+        if (typeof multipleCancelButton === 'undefined') {
+            console.error("Choices.js chưa được khởi tạo!");
+            return;
+        }
+
+        if (multipleCancelButton) {
+            multipleCancelButton.destroy();
+        }
+        multipleCancelButton = new Choices('#updateTags', { removeItemButton: true, shouldSort: false });
+
+        // Convert tags from JSON to Choices.js format
+        let newChoices = tags.map(tag => ({
+            value: tag.tagId.toString(),
+            label: tag.tagName,
+            selected: true
+        }));
+
+        // Merge old and new lists, avoiding duplicates
+        let mergedChoices = [...existingOptions, ...newChoices].reduce((acc, choice) => {
+            if (!acc.find(item => item.value === choice.value)) {
+                acc.push(choice);
+            }
+            return acc;
+        }, []);
+        multipleCancelButton.clearStore();
+
+        // Update Choices.js without losing existing data
+        multipleCancelButton.setChoices(mergedChoices, 'value', 'label', true);
+    }
+
+    function updateButton(id) {
+        const selectElement = document.getElementById("updateTagsAAA");
+
+        if (!selectElement) {
+            console.error("Không tìm thấy phần tử select!");
+            return;
+        }
+        // Get current options from select element
+        let existingOptions = Array.from(selectElement.options).map(option => ({
+            value: option.value,
+            label: option.textContent,
+            selected: option.selected
+        }));
+
+        fetch(`/News/Edit?id=${id}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#updateId").val(data.data.newsArticleId);
+                    $("#updateNewsTitle").val(data.data.newsTitle);
+                    $("#updateHeadline").val(data.data.headline);
+                    $("#updateNewsContent").val(data.data.newsContent);
+                    $("#updateNewsSource").val(data.data.newsSource);
+                    $("#updateCategory").val(data.data.categoryId);
+                    $("#updateStatus").val(data.data.newsStatus == true ? "1" : "0");
+                    updateChoicesTags(data.data.tags.$values, existingOptions);
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    }
+
+    document.getElementById("updateForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent page reload
+
+        var newsId = document.getElementById("updateId").value.trim();
+        var newsTitle = document.getElementById("updateNewsTitle").value.trim();
+        var headline = document.getElementById("updateHeadline").value.trim();
+        var newsContent = document.getElementById("updateNewsContent").value.trim();
+        var newsSource = document.getElementById("updateNewsSource").value.trim();
+        var category = document.getElementById("updateCategory").value.trim();
+        var status = document.getElementById("updateStatus").value.trim();
+
+        // Get selected tags from Choices.js
+        var tag = multipleCancelButton.getValue(true);
+
+        // Check if any required fields are missing
+        if (!newsTitle || !headline || !newsContent || !newsSource || !category || !status) {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/News/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                NewsArticleId: newsId,
+                NewsTitle: newsTitle,
+                Headline: headline,
+                NewsContent: newsContent,
+                NewsSource: newsSource,
+                CategoryId: category,
+                Tags: tag,  // Make sure tags are in the correct format
+                NewsStatus: status
+            })
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật news thành công!");
+                    // Don't reload the page - SignalR will handle the update
+                    $("#updateModal").modal('hide');
+                } else {
+                    alert("Lỗi: " + (data.message || "Không thể cập nhật!"));
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+
+    // SignalR connection setup
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/newsHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect([0, 2000, 10000, 30000]) // Reconnect with increasing delays
+        .build();
+
+    // Add data attributes to existing rows when the page loads
+    $(document).ready(function () {
+        const tableRows = document.querySelectorAll("table tbody tr");
+        tableRows.forEach(row => {
+            const idCell = row.querySelector("td:last-child button");
+            if (idCell && idCell.value) {
+                row.setAttribute("data-id", idCell.value);
+            }
+        });
+    });
+
+    // Handle receiving new news articles
+    connection.on("NewsCreated", (newsArticle) => {
+        const tbody = document.querySelector("table tbody");
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-id", newsArticle.newsArticleId);
+
+        // Format dates properly
+        const createdDate = newsArticle.createdDate ? new Date(newsArticle.createdDate).toLocaleString() : '';
+        const modifiedDate = newsArticle.modifiedDate ? new Date(newsArticle.modifiedDate).toLocaleString() : '';
+
+        // Format tags as spans
+        const tagsHtml = newsArticle.tags.map(tag => `<span>${tag.tagName}</span>`).join(' ');
+
+        newRow.innerHTML = `
+            <td>${newsArticle.newsTitle}</td>
+            <td>${newsArticle.headline}</td>
+            <td>${createdDate}</td>
+            <td>${newsArticle.newsContent}</td>
+            <td>${newsArticle.newsSource}</td>
+            <td>${newsArticle.newsStatus ? 'Active' : 'Inactive'}</td>
+            <td>${modifiedDate}</td>
+            <td>${newsArticle.category.categoryName}</td>
+            <td>${newsArticle.createdBy.accountEmail}</td>
+            <td>${newsArticle.updatedById || ''}</td>
+            <td>${tagsHtml}</td>
+            <td>
+                <button onclick="updateButton('${newsArticle.newsArticleId}')" value="${newsArticle.newsArticleId}" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                <a class="btn btn-info mt-3 mb-3" href="/News/Details?id=${newsArticle.newsArticleId}">Details</a>
+                <a class="btn btn-danger" href="/News/Delete?id=${newsArticle.newsArticleId}">Delete</a>
+            </td>
+        `;
+        tbody.appendChild(newRow);
+    });
+
+    // Handle updating existing news articles
+    connection.on("NewsUpdated", (newsArticle) => {
+        const row = document.querySelector(`tr[data-id="${newsArticle.newsArticleId}"]`);
+        if (row) {
+            // Format dates properly
+            const createdDate = newsArticle.createdDate ? new Date(newsArticle.createdDate).toLocaleString() : '';
+            const modifiedDate = newsArticle.modifiedDate ? new Date(newsArticle.modifiedDate).toLocaleString() : '';
+
+            // Format tags as spans
+            const tagsHtml = newsArticle.tags.map(tag => `<span>${tag.tagName}</span>`).join(' ');
+
+            row.innerHTML = `
+                <td>${newsArticle.newsTitle}</td>
+                <td>${newsArticle.headline}</td>
+                <td>${createdDate}</td>
+                <td>${newsArticle.newsContent}</td>
+                <td>${newsArticle.newsSource}</td>
+                <td>${newsArticle.newsStatus ? 'Active' : 'Inactive'}</td>
+                <td>${modifiedDate}</td>
+                <td>${newsArticle.category.categoryName}</td>
+                <td>${newsArticle.createdBy.accountEmail}</td>
+                <td>${newsArticle.updatedById || ''}</td>
+                <td>${tagsHtml}</td>
+                <td>
+                    <button onclick="updateButton('${newsArticle.newsArticleId}')" value="${newsArticle.newsArticleId}" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                    <a class="btn btn-info mt-3 mb-3" href="/News/Details?id=${newsArticle.newsArticleId}">Details</a>
+                    <a class="btn btn-danger" href="/News/Delete?id=${newsArticle.newsArticleId}">Delete</a>
+                </td>
+            `;
+        } else {
+            console.warn("Could not find row to update with ID:", newsArticle.newsArticleId);
+        }
+    });
+
+    // Handle deleted news articles
+    connection.on("NewsDeleted", (newsArticleId) => {
+        const row = document.querySelector(`tr[data-id="${newsArticleId}"]`);
+        if (row) {
+            row.remove();
+        }
+    });
+
+    // Function to handle deleting news articles via AJAX
+    function deleteNews(id) {
+        if (confirm('Are you sure you want to delete this news article?')) {
+            fetch('/News/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // SignalR will handle removing the row
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error deleting news:", error));
+        }
+    }
+
+    // Start the SignalR connection
+    async function startConnection() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected");
+        } catch (err) {
+            console.error("SignalR Connection Error: ", err);
+            setTimeout(startConnection, 5000);
+        }
+    }
+
+    // Initialize the connection when the page loads
+    startConnection();
+
+    // Handle connection closed event
+    connection.onclose(async () => {
+        console.log("SignalR Disconnected");
+        await startConnection();
+    });
+
+</script>

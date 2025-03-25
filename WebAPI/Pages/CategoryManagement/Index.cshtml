@@ -1,0 +1,253 @@
+﻿@page
+@model WebAPI.Pages.CategoryManagement.IndexModel
+
+@{
+    ViewData["Title"] = "Category Management";
+}
+
+<h1>Category Management</h1>
+
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#registerModal">
+    Create New Category
+</button>
+<form class="d-flex align-content-center" method="get">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Enter category name" class="form-control mt-2" />
+    <button type="submit" class="btn btn-primary mt-2 ms-2">Search</button>
+</form>
+<div class="container">
+    <div class="modal fade" id="registerModal" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Tạo Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerCategoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="registerCategoryName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerCategoryDes" class="form-label">Category Description</label>
+                            <input type="text" class="form-control" id="registerCategoryDes" required>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select" id="registerParentCategory" >
+                                <option value="">Select Parent Category</option>
+                                @foreach (var item in Model.Category)
+                                {
+                                    <option value="@item.CategoryId">@item.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateModal" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Cập nhật tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm">
+                        <input type="hidden" id="updateId">
+                        <div class="mb-3">
+                            <label for="updateCategoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="updateCategoryName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateCategoryDes" class="form-label">Category Description</label>
+                            <input type="text" class="form-control" id="updateCategoryDes" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateParentCategory" class="form-label">Parent Category</label>
+                            <select class="form-select" id="updateParentCategory" required>
+                                <option value="">Select Parent Category</option>
+                                @foreach (var item in Model.Category)
+                                {
+                                    // Nếu là chính nó thì không hiển thị
+
+                                        <option value="@item.CategoryId">@item.CategoryName</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateStatus" class="form-label">Category Status</label>
+                            <select class="form-select" id="updateStatus" required>
+                                <option value="1" >Active</option>
+                                <option value="0" >InActive</option>
+                            </select>
+                        </div
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].CategoryDesciption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].ParentCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Category) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryDesciption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentCategory.CategoryName)
+            </td>
+            <td>
+                    <button onclick="updateButton(@item.CategoryId)" value="@item.CategoryId" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                    <a class="btn btn-info" asp-page="./Details" asp-route-id="@item.CategoryId">Details</a>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.CategoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+
+<script>
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var categoryName = document.getElementById("registerCategoryName").value.trim();
+        var categoryDescription = document.getElementById("registerCategoryDes").value.trim();
+        var categoryParentCategory =  document.getElementById("registerParentCategory").value.trim();
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!categoryName || !categoryDescription ) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/CategoryManagement/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                CategoryName: categoryName,
+                CategoryDesciption: categoryDescription,
+                ParentCategoryId: categoryParentCategory
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Tạo danh mục thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+
+    document.getElementById("updateForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Ngăn chặn reload trang
+
+        var categoryName = document.getElementById("updateCategoryName").value.trim();
+        var categoryDescription = document.getElementById("updateCategoryDes").value.trim();
+        var categoryParentCategory =  document.getElementById("updateParentCategory").value.trim();
+        
+        var categoryIsActive =  document.getElementById("updateStatus").value.trim();
+        var categoryId =  document.getElementById("updateId").value.trim();
+        
+
+        // Kiểm tra nếu dữ liệu nhập bị trống
+        if (!categoryName || !categoryDescription) {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        fetch('/CategoryManagement/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                CategoryName: categoryName,
+                CategoryDesciption: categoryDescription,
+                ParentCategoryId: categoryParentCategory,
+                IsActive: categoryIsActive,
+                CategoryId: categoryId
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật tài khoản thành công!");
+                    location.reload(); // Reload trang sau khi đăng ký thành công
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error("Lỗi khi gửi request:", error));
+    });
+    function updateButton(id) {
+    fetch(`/CategoryManagement/Edit?id=${id}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            $("#updateCategoryName").val(data.data.categoryName);
+            $("#updateCategoryDes").val(data.data.categoryDesciption);
+            $("#updateParentCategory").val(data.data.parentCategoryId);
+            $("#updateStatus").val(data.data.isActive ? "1" : "0");
+            $("#updateId").val(data.data.categoryId);
+        } else {
+            alert("Lỗi: " + data.message);
+        }
+    })
+    .catch(error => console.error("Lỗi khi gửi request:", error));
+}
+    // // Remove root category in list
+    // document.getElementById("updateParentCategory").addEventListener("click", function () {
+    //     var parentCategory = document.getElementById("updateId").value;
+    //     var options = document.getElementById("updateParentCategory").options;
+    //     for (var i = 0; i < options.length; i++) {
+    //         console.log(options[i].value);
+    //         if (options[i].value == parentCategory) {
+    //             options[i].remove();
+    //         } else {
+    //             options[i].disabled = false;
+    //         }
+    //     }
+    // });
+
+
+</script>
